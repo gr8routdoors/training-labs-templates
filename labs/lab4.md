@@ -77,15 +77,19 @@ Now you can see label’s <code>kind</code>, it is type of rule by which target 
 
 Here are each target BUILD file path, position inside and label_kind
 
-    $ bazel query //... --output build
+```bash
+$ bazel query //... --output build
+```
 
-    # //some/path/grpc-java/BUILD.bazel:17:19
+```bazel
+# //some/path/grpc-java/BUILD.bazel:17:19
 
-    java_proto_library(
+java_proto_library(
     name = "api_proto_java",
     deps = ["@com_google_protobuf//:api_proto"],
-    )
-    ...
+)
+# ...
+```
 
 Now for each target you can see the actual rule definition and BUILD file path in which it is contained.
 
@@ -140,9 +144,11 @@ You will see long list of labels, containing jre deps, different tools, source f
 
 Now we can see only direct api dependency libraries and source files.
 
-<code>--noimplicit_deps</code> - option causes implicit dependencies not to be included in the dependency graph over which the query operates. An implicit dependency is one that is not explicitly specified in the BUILD file but added by bazel.
+`--noimplicit_deps`
+: option causes implicit dependencies not to be included in the dependency graph over which the query operates. An implicit dependency is one that is not explicitly specified in the BUILD file but added by bazel.
 
-<code>--notool_deps</code> - option causes dependencies in non-target configurations not to be included in the dependency graph over which the query operates.
+`--notool_deps`
+: option causes dependencies in non-target configurations not to be included in the dependency graph over which the query operates.
 
 #### 2: kind
 
@@ -178,33 +184,37 @@ And what if we want to find only <code>java_libraries</code> there?
 
 Now we know how to do basic queries, for more complex examples:
 
-https://docs.bazel.build/versions/master/query.html
-https://docs.bazel.build/versions/master/query-how-to.html
+ * https://docs.bazel.build/versions/master/query.html
+ * https://docs.bazel.build/versions/master/query-how-to.html
 
-### Part 4: genquery
+### Part 4: `genquery`
 
 Let’s define query as rule with output in file.
 
 Open root <code>BUILD.bazel</code> file in <code>grpc_core</code> directory and append this:
 
-    genquery(
+```bazel
+genquery(
     name = "test_genquery",
     expression = "deps(//core:core)",
     scope = ["//core:core"],
     opts = ["--output", "label_kind", "--notool_deps", "--noimplicit_deps"],
-    )
+)
+```
 
 Now, run it:
 
-    $ bazel build :test_genquery
-    INFO: Analyzed target //:test_genquery (0 packages loaded, 0 targets configured).
-    INFO: Found 1 target...
-    Target //:test_genquery up-to-date:
-    bazel-bin/test_genquery
+```bash
+$ bazel build :test_genquery
+INFO: Analyzed target //:test_genquery (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+Target //:test_genquery up-to-date:
+bazel-bin/test_genquery
+```
 
 Inside <code>bazel-bin/test_genquery</code> file you will find text output similar to invocation:
 
-    bazel query 'deps(//core:core)' --notool_deps --noimplicit_deps --output label_kind
+    $ bazel query 'deps(//core:core)' --notool_deps --noimplicit_deps --output label_kind
 
 ## Lab 4.2 - Profiling
 
@@ -249,15 +259,16 @@ Check contents of the disk cache directory.
 <details>
   <summary>Hint</summary> <code>ls -lh</code> output will look like below:
 
-```
+```bash
 training-labs$ ls -lh /tmp/bazel-disk-cache/
 total 448M
--rw-r--r-- 1 me me  56K Aug  6 19:08 0014baf050e3e572ff6dc1e75b9d5ac5d795d3ae298ce3ee4abb3d97ed91c71f
--rw-r--r-- 1 me me 1.5K Aug  6 19:08 0043a851d451d29523714216c6f0a0ccce01347892ccf2720c03be15c2c39457
--rw-r--r-- 1 me me  142 Aug  6 19:07 00d000c2891db234fe6d08344edd61f337a5e8072157bce92c11af76ac1bc071
--rw-r--r-- 1 me me  142 Aug  6 19:08 00ec9118414add045bb26008a62e0ba717abb033e876cd4d18186f94348fd933
--rw-r--r-- 1 me me  12K Aug  6 19:08 0114820786393a46a2985fa0d369de6139739dd86408900024bb5659c989c5e9
+-rw-r--r-- 1 me me 56K Aug 6 19:08 0014baf050e3e572ff6dc1e75b9d5ac5d795d3ae298ce3ee4abb3d97ed91c71f
+-rw-r--r-- 1 me me 1.5K Aug 6 19:08 0043a851d451d29523714216c6f0a0ccce01347892ccf2720c03be15c2c39457
+-rw-r--r-- 1 me me 142 Aug 6 19:07 00d000c2891db234fe6d08344edd61f337a5e8072157bce92c11af76ac1bc071
+-rw-r--r-- 1 me me 142 Aug 6 19:08 00ec9118414add045bb26008a62e0ba717abb033e876cd4d18186f94348fd933
+-rw-r--r-- 1 me me 12K Aug 6 19:08 0114820786393a46a2985fa0d369de6139739dd86408900024bb5659c989c5e9
 ...
+
 ```
 
 </details>
@@ -275,7 +286,7 @@ Check how much cache hits you have and how much time the build takes now.
 <details>
   <summary>Hint</summary> <code>bazel build</code> output will look like below:
 
-```
+```bash
 training-labs$ bazel build --disk_cache /tmp/bazel-disk-cache //...
 INFO: Invocation ID: 72a10c23-1d9f-462d-8097-6c22209c94ea
 INFO: Analyzed 39 targets (165 packages loaded, 21329 targets configured).
@@ -295,12 +306,14 @@ Bazel supports shorthands for groups of CLI options in it's RC files so you don'
 
 Add these lines to <code>user.bazelrc</code>:
 
-```
-build:_myconfig --disk_cache /tmp/bazel-disk-cache/
-build:_myconfig --show_timestamps
-build:_myconfig --subcommands
+```bazelrc
+build:\_myconfig --disk_cache /tmp/bazel-disk-cache/
+build:\_myconfig --show_timestamps
+build:\_myconfig --subcommands
+
 ```
 
 Now, if you run build with <code>--config=\_myconfig</code>, it will use disk cache, will show timestamps and subcommands.
 
 Try it with <code>bazel clean && bazel build --config=\_myconfig //...</code> to see the difference.
+
