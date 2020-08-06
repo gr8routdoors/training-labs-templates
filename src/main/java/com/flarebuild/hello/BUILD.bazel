@@ -1,0 +1,10 @@
+load("@rules_java//java:defs.bzl", "java_binary")
+
+java_binary(
+    name = "hello",
+    srcs = ["Hello.java"],
+    visibility = [
+        "//src/main/docker:__pkg__",
+    ],
+    main_class = "com.flarebuild.hello.Hello",
+)

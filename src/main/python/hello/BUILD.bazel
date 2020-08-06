@@ -1,0 +1,15 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+
+py_binary(
+    name = "hello",
+    srcs = ["hello.py"],
+)
+
+load("@io_bazel_rules_docker//python:image.bzl", "py_image")
+
+py_image(
+    name = "hello_image",
+    srcs = ["hello.py"],
+    # Need to specify main explicitly because the name is different
+    main = "hello.py",
+)

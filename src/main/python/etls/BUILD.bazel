@@ -1,0 +1,10 @@
+load(":py_zip.bzl", "py_zip")
+
+py_zip(
+    name = "simple_bigquery_zip",
+    srcs = [
+        "//src/main/python/etls/lor:simple_bigquery",
+        "//src/main/python/etls/utils",
+    ],
+    #    out_override = "my_zip",
+)
