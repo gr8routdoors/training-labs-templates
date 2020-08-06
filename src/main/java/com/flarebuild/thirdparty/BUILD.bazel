@@ -1,9 +1,0 @@
-load("@rules_java//java:defs.bzl", "java_binary")
-
-java_binary(
-    name = "math",
-    srcs = ["math.java"],
-    deps = [
-        "@maven//:org_apache_commons_commons_math3",
-    ],
-)
