@@ -1,0 +1,10 @@
+load("@rules_java//java:defs.bzl", "java_binary")
+
+java_binary(
+    name = "main",
+    srcs = ["Main.java"],
+    main_class = "com.flarebuild.message.Main",
+    deps = [
+        "//src/main/proto:message_object_proto_java",
+    ],
+)

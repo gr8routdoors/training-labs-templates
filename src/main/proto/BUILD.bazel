@@ -1,0 +1,20 @@
+load("@rules_java//java:defs.bzl", "java_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@rules_proto_grpc//python:defs.bzl", "python_proto_library")
+
+proto_library(
+    name = "message_object_proto",
+    srcs = [":message_object.proto"],
+)
+
+java_proto_library(
+    name = "message_object_proto_java",
+    visibility = ["//src/main/java/com/flarebuild/message:__pkg__"],
+    deps = [":message_object_proto"],
+)
+
+python_proto_library(
+    name = "message_object_proto_python",
+    visibility = ["//src/main/python/message:__pkg__"],
+    deps = [":message_object_proto"],
+)

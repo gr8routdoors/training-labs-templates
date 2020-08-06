@@ -1,0 +1,21 @@
+load("@pip//:requirements.bzl", "requirement")
+
+py_test(
+    name = "prediction_test",
+    size = "small",
+    srcs = ["prediction_test.py"],
+    data = [":images"],
+    deps = [
+        requirement("Pillow"),
+        requirement("numpy"),
+        "//src/main/python/classifier:main",
+    ],
+)
+
+filegroup(
+    name = "images",
+    srcs = [
+        "images/pullover.png",
+        "images/trousers.png",
+    ],
+)
