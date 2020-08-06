@@ -14,7 +14,7 @@
 Given the following Maven dependency definition, add <code>commons-math3</code> to the project.
 
 
-```
+```xml
 <dependency>
    <groupId>org.apache.commons</groupId>
    <artifactId>commons-math3</artifactId>
@@ -22,12 +22,11 @@ Given the following Maven dependency definition, add <code>commons-math3</code> 
 </dependency>
 ```
 
-
 <details>
   <summary>Hint</summary> Add  <code>"org.apache.commons:commons-math3:3.1" </code>to the artifacts list of <code>maven_install</code> in the <code>WORKSPACE</code>: 
 
 
-```
+```bazel
 maven_install(
    name = "maven",
    artifacts = [
@@ -62,7 +61,7 @@ Increase the version of commons-math to 3.3.2.
   <summary>Hint</summary> Change  <code>"org.apache.commons:commons-math3:3.1" </code>to <code>"org.apache.commons:commons-math3:3.2" in </code>the artifacts list of <code>maven_install</code> in the <code>WORKSPACE</code>: 
 
 
-```
+```bazel
 maven_install(
    name = "maven",
    artifacts = [
@@ -84,10 +83,9 @@ maven_install(
 There is a Java library at <code>src/main/java/com/flarebuild/complex/generator/ComplexGenerator.java</code>. Create a BUILD file for it such that it can be built with:
 
 
-```
+```bash
 bazel build //src/main/java/com/flarebuild/complex/generator:ComplexGenerator
 ```
-
 
 Note that this library depends on <code>commons-math3. </code>
 
@@ -95,18 +93,18 @@ Note that this library depends on <code>commons-math3. </code>
   <summary>Hint</summary> create file <code>src/main/java/com/flarebuild/complex/generator/BUILD</code> with contents:
 
 
-```
-    load("@rules_java//java:defs.bzl", "java_library")
+```bazel
+load("@rules_java//java:defs.bzl", "java_library")
 
-    package(default_visibility = ["//visibility:public"])
+package(default_visibility = ["//visibility:public"])
 
-    java_library(
-       name = "ComplexGenerator",
-       srcs = ["ComplexGenerator.java"],
-       deps = [
-           "@maven//:org_apache_commons_commons_math3",
-       ],
-    )
+java_library(
+    name = "ComplexGenerator",
+    srcs = ["ComplexGenerator.java"],
+    deps = [
+        "@maven//:org_apache_commons_commons_math3",
+    ],
+)
 ```
 </details>
 
@@ -122,7 +120,7 @@ Note that this library depends on <code>commons-math3. </code>
 Given the following Maven dependency definition, add <code>junit</code> to the project. Note that the test scope maps to testonly=True in the Bazel world, and that to use this property, we’ll want to use the [maven.artifact](https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/api.md#mavenartifact) variant of artifact definition.
 
 
-```
+```xml
 <dependency>
    <groupId>junit</groupId>
    <artifactId>junit</artifactId>
@@ -136,7 +134,7 @@ Given the following Maven dependency definition, add <code>junit</code> to the p
   <summary>Hint</summary> Update <code>maven_install</code> in the <code>WORKSPACE</code> to the following:
 
 
-```
+```bazel
 maven_install(
    name = "maven",
    artifacts = [
@@ -169,7 +167,7 @@ Run <code>bazel run @unpinned_maven//:pin</code>
 There is a Java test at <code>src/test/java/com/flarebuild/complex/ComplexGeneratorTest.java</code>. Create a BUILD file for it such that it can be run with: 
 
 
-```
+```bash
 bazel test //src/test/java/com/flarebuild/complex:ComplexGeneratorTest
 ```
 
@@ -178,7 +176,7 @@ bazel test //src/test/java/com/flarebuild/complex:ComplexGeneratorTest
   <summary>Hint</summary> Create file <code>src/test/java/com/flarebuild/complex/BUILD </code>with contents:
 
 
-```
+```bazel
 load("@rules_java//java:defs.bzl", "java_library", "java_test")
 
 java_test(
@@ -200,7 +198,7 @@ Invoke with  <code>bazel test //src/test/java/com/flarebuild/complex:ComplexGene
 
 ## Lab 3.3 - Python 3rd-party Dependencies
 
-[Rules_python_external](https://github.com/dillon-giacoppo/rules_python_external/blob/master/example/BUILD#L31) is configured for the workspace, and in this lab you’ll learn how to interact with 3rd-party Python dependencies in addition to creating BUILD files for python applications and tests. There is an image classification program in this repository at <code>src/main/python/classifier/main.py</code>; we are going to build, run and test it.
+[rules_python_external](https://github.com/dillon-giacoppo/rules_python_external/blob/master/example/BUILD#L31) is configured for the workspace, and in this lab you’ll learn how to interact with 3rd-party Python dependencies in addition to creating BUILD files for python applications and tests. There is an image classification program in this repository at <code>src/main/python/classifier/main.py</code>; we are going to build, run and test it.
 
 
 ### Part 1: Add Pip dependencies
@@ -212,7 +210,7 @@ Invoke with  <code>bazel test //src/test/java/com/flarebuild/complex:ComplexGene
   <summary>Hint</summary> in requirements.txt add the following: 
 
 
-```
+```pip
     numpy==1.19.1
     tensorflow==2.3.0
     matplotlib==3.1.2
@@ -226,7 +224,7 @@ Invoke with  <code>bazel test //src/test/java/com/flarebuild/complex:ComplexGene
 There is a Python program at <code>src/main/python/classifier/main.py</code>. Create a BUILD file for it such that it can be built with: 
 
 
-```
+```bash
 bazel build //src/main/python/classifier:main
 ```
 
@@ -235,17 +233,17 @@ bazel build //src/main/python/classifier:main
   <summary>Hint</summary> Create file <code>src/main/python/classifier/BUILD </code>with contents:
 
 
-```
-    load("@pip//:requirements.bzl", "requirement")
-    py_binary(
-       name = "main",
-       srcs = ["main.py"],
-       data = glob(["model/"]),
-       deps = [
-           requirement("tensorflow"),
-           requirement("matplotlib"),
-       ],
-    )
+```bazel
+load("@pip//:requirements.bzl", "requirement")
+py_binary(
+    name = "main",
+    srcs = ["main.py"],
+    data = glob(["model/"]),
+    deps = [
+        requirement("tensorflow"),
+        requirement("matplotlib"),
+    ],
+)
 ```
 </details>
 
@@ -260,28 +258,28 @@ There is a Python test at <code>src/test/python/classifier/prediction_test.py</c
   <summary>Hint</summary> Create file <code>src/test/python/classifier/BUILD </code>with contents:
 
 
-```
-    load("@pip//:requirements.bzl", "requirement")
+```bazel
+load("@pip//:requirements.bzl", "requirement")
 
-    py_test(
-       name = "prediction_test",
-       size = "small",
-       srcs = ["prediction_test.py"],
-       data = [":images"],
-       deps = [
-           requirement("Pillow"),
-           requirement("numpy"),
-           "//src/main/python/classifier:main",
-       ],
-    )
+py_test(
+    name = "prediction_test",
+    size = "small",
+    srcs = ["prediction_test.py"],
+    data = [":images"],
+    deps = [
+        requirement("Pillow"),
+        requirement("numpy"),
+        "//src/main/python/classifier:main",
+    ],
+)
 
-    filegroup(
-       name = "images",
-       srcs = [
-           "images/pullover.png",
-           "images/trousers.png",
-       ],
-    )
+filegroup(
+    name = "images",
+    srcs = [
+        "images/pullover.png",
+        "images/trousers.png",
+    ],
+)
 ```
 </details>
 
@@ -302,7 +300,7 @@ Create a BUILD file under <code>//src/main/proto </code>and make the packages it
   <summary>Hint</summary> create file src/main/proto/BUILD: 
 
 
-```
+```bazel
 load("@rules_java//java:defs.bzl", "java_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@rules_proto_grpc//python:defs.bzl", "python_proto_library")
@@ -329,11 +327,9 @@ python_proto_library(
 
 #### 2: Build the proto library targets
 
-
-
-*   <code>bazel build //src/main/proto:message_object_proto</code>
-*   <code>bazel build //src/main/proto:message_object_proto_java</code>
-*   <code>bazel build //src/main/proto:message_object_proto_python</code>
+* <code>bazel build //src/main/proto:message_object_proto</code>
+* <code>bazel build //src/main/proto:message_object_proto_java</code>
+* <code>bazel build //src/main/proto:message_object_proto_python</code>
 
 
 ### Part 2: Create a BUILD file for the Java binary 
@@ -346,17 +342,17 @@ Create a BUILD file such that the java program can be built with <code>bazel bui
   <summary>Hint</summary> Create file <code>src/main/java/com/flarebuild/message/BUILD </code>with contents: 
 
 
-```
-    load("@rules_java//java:defs.bzl", "java_binary")
+```bazel
+load("@rules_java//java:defs.bzl", "java_binary")
 
-    java_binary(
-       name = "main",
-       srcs = ["Main.java"],
-       main_class = "com.flarebuild.message.Main",
-       deps = [
-           "//src/main/proto:message_object_proto_java",
-       ],
-    )
+java_binary(
+    name = "main",
+    srcs = ["Main.java"],
+    main_class = "com.flarebuild.message.Main",
+    deps = [
+        "//src/main/proto:message_object_proto_java",
+    ],
+)
 ```
 </details>
 
@@ -369,42 +365,42 @@ Create a BUILD file such that the python program can be built with <code>bazel b
   <summary>Hint</summary> the file <code>//src/main/python/message/BUILD </code>should contain:
 
 
-```
-    load("@rules_python//python:defs.bzl", "py_binary")
+```bazel
+load("@rules_python//python:defs.bzl", "py_binary")
 
-    py_binary(
-       name = "message",
-       srcs = ["message.py"],
-       deps = [
-           "//src/main/proto:message_object_proto_python",
-       ],
-    )
+py_binary(
+    name = "message",
+    srcs = ["message.py"],
+    deps = [
+        "//src/main/proto:message_object_proto_python",
+    ],
+)
 ```
 </details>
 
 ### Part 4: Tighten up visibility
 
 
-
 1. Remove <code>package(default_visibility = ["//visibility:public"]) </code>from src/main/proto/BUILD.
+
 2. Make targets message_object_proto_java and message_object_proto_python  visible exclusively  to  <code>//src/main/java/com/flarebuild/message </code>and to<code> //src/main/python/proto </code>respectively.
 
 <details>
   <summary>Hint</summary> Targets now should look like this:
 
 
-```
-    java_proto_library(
-       name = "message_object_proto_java",
-       visibility = ["//src/main/java/com/flarebuild/message:__pkg__"],
-       deps = [":message_object_proto"],
-    )
+```bazel
+java_proto_library(
+    name = "message_object_proto_java",
+    visibility = ["//src/main/java/com/flarebuild/message:__pkg__"],
+    deps = [":message_object_proto"],
+)
 
-    python_proto_library(
-       name = "message_object_proto_python",
-       visibility = ["//src/main/python/message:__pkg__"],
-       deps = [":message_object_proto"],
-    )
+python_proto_library(
+    name = "message_object_proto_python",
+    visibility = ["//src/main/python/message:__pkg__"],
+    deps = [":message_object_proto"],
+)
 ```
 </details>
 

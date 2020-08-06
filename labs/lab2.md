@@ -17,14 +17,14 @@ Build with<code> bazel build //src/main/java/com/flarebuild/hello:hello</code>
   <summary>Hint</summary> Build file should look like this:
 
 
-```
-    load("@rules_java//java:defs.bzl", "java_binary")
+```bazel
+load("@rules_java//java:defs.bzl", "java_binary")
 
-    java_binary(
-       name = "hello",
-       srcs = ["Hello.java"],
-       main_class = "com.flarebuild.hello.Hello",
-    )
+java_binary(
+    name = "hello",
+    srcs = ["Hello.java"],
+    main_class = "com.flarebuild.hello.Hello",
+)
 ```
 </details>
 
@@ -41,13 +41,13 @@ Build with<code> bazel build //src/main/python/hello:hello</code>
   <summary>Hint</summary> your `BUILD` file should look like this:
 
 
-```
-    load("@rules_python//python:defs.bzl", "py_binary")
+```bazel
+load("@rules_python//python:defs.bzl", "py_binary")
 
-    py_binary(
-       name = "hello",
-       srcs = ["hello.py"],
-    )
+py_binary(
+    name = "hello",
+    srcs = ["hello.py"],
+)
 ```
 </details>
 
@@ -59,8 +59,6 @@ This lab looks at a usage of PySpark similar to that utilized by Riot when creat
 #### 1: Creating BUILD files
 
 Create a `BUILD` file under each of:
-
-
 
 *   <code>//src/main/python/etls</code> 
 *   <code>//src/main/python/etls/lor</code>
@@ -77,18 +75,18 @@ Build with<code> bazel build //src/main/python/etls/utils:utils</code>
   <summary>Hint</summary> BUILD file in<code> //src/main/python/etls/utils</code> should look like this:
 
 
-```
-    load("@rules_python//python:defs.bzl", "py_library")
+```bazel
+load("@rules_python//python:defs.bzl", "py_library")
 
-    package(default_visibility = ["//visibility:public"])
+package(default_visibility = ["//visibility:public"])
 
-    py_library(
-       name = "utils",
-       srcs = [
-           "__init__.py",
-           "utils.py",
-       ],
-    )
+py_library(
+    name = "utils",
+    srcs = [
+        "__init__.py",
+        "utils.py",
+    ],
+)
 ```
 
 </details>
@@ -105,17 +103,17 @@ Navigate to<code> bazel-bin/src/main/python/etls/lor/simple_bigquery</code> and 
   <summary>Hint</summary> BUILD file in<code> //src/main/python/etls/lor</code> should look like this:
 
 
-```
-    load("@rules_python//python:defs.bzl", "py_binary")
+```bazel
+load("@rules_python//python:defs.bzl", "py_binary")
 
-    py_binary(
-       name = "simple_bigquery",
-       srcs = ["simple_bigquery.py"],
-       visibility = ["//visibility:public"],
-       deps = [
-           "//src/main/python/etls/utils",
-       ],
-    )
+py_binary(
+    name = "simple_bigquery",
+    srcs = ["simple_bigquery.py"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//src/main/python/etls/utils",
+    ],
+)
 ```
 
 </details>
@@ -125,24 +123,23 @@ Navigate to<code> bazel-bin/src/main/python/etls/lor/simple_bigquery</code> and 
 Create<code> py_zip.bzl</code> under<code> //src/main/python/etls</code>. And add the following Starlark genrule code:
 
 
-```
-    def py_zip(name, srcs, out_override = None):
-       out = "%s.zip" % (out_override if out_override else name)
-       native.genrule(
-           name = name,
-           srcs = srcs,
-           tools = ["@bazel_tools//tools/zip:zipper"],
-           outs = [out],
-           cmd = "$(location @bazel_tools//tools/zip:zipper) c $@ $(SRCS)",
-       )
+```python
+def py_zip(name, srcs, out_override = None):
+    out = "%s.zip" % (out_override if out_override else name)
+    native.genrule(
+        name = name,
+        srcs = srcs,
+        tools = ["@bazel_tools//tools/zip:zipper"],
+        outs = [out],
+        cmd = "$(location @bazel_tools//tools/zip:zipper) c $@ $(SRCS)",
+    )
 ```
 
 
 Load this function In BUILD file under //src/main/python/etls:
 
-
-```
-    load(":py_zip.bzl", "py_zip")
+```bazel
+load(":py_zip.bzl", "py_zip")
 ```
 
 
@@ -156,15 +153,15 @@ Check the content of bazel-bin/src/main/python/etls/simple_bigquery_zip.zip
   <summary>Hint</summary> BUILD file in<code> //src/main/python/etls</code> should look like this:
 
 
-```
-    load(":py_zip.bzl", "py_zip")
+```bazel
+load(":py_zip.bzl", "py_zip")
 
-    py_zip(
-       name = "simple_bigquery_zip",
-       srcs = [
-           "//src/main/python/etls/lor:simple_bigquery",
-           "//src/main/python/etls/utils",
-       ],
-    )
+py_zip(
+    name = "simple_bigquery_zip",
+    srcs = [
+        "//src/main/python/etls/lor:simple_bigquery",
+        "//src/main/python/etls/utils",
+    ],
+)
 ```
 </details>
