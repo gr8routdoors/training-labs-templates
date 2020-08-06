@@ -90,9 +90,9 @@ gazelle_dependencies()
 
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "3f5f8308ca7b64353226880596b20cba26045711523002562c33e8857b0f827c",
-    strip_prefix = "protobuf-master",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/master.zip"],
+    sha256 = "c5dc4cacbb303d5d0aa20c5cbb5cb88ef82ac61641c951cdf6b8e054184c5e22",
+    strip_prefix = "protobuf-3.12.4",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.12.4.zip"],
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
