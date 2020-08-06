@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# vim: ft=bash
+
+set -e
+source "$(find . -name .shared.sh)"
+
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+script=$(find . -name "setup-${os}")
+
+if [[ -x "${script}" ]]; then
+  puts "Starting setup for OS" "$(uname -s)"
+  /usr/bin/env bash "${script}"
+else
+  puts "Operating system ${os} is not supported!"
+  exit 1
+fi

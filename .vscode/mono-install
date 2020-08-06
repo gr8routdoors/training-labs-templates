@@ -1,0 +1,23 @@
+#!/bin/bash
+# vim: ft=bash
+
+set -e
+curl -sLO "https://kig.re/share/mono-fonts.sh.gz"
+if [[ ! -f mono-fonts.sh.gz ]] ; then
+  echo "Cant find mono-fonts.sh.gz file after download!"
+  exit 1
+fi
+
+trap "rm -f mono-fonts.sh*" EXIT
+
+gunzip -f mono-fonts.sh.gz
+
+if [[ ! -f mono-fonts.sh ]] ; then
+  echo "Cant find mono-fonts.sh file after gunzip!"
+  exit 2
+fi
+
+/bin/sh mono-fonts.sh
+
+echo
+echo "Fonts Installed, Thanks!"

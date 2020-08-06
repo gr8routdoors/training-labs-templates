@@ -1,0 +1,20 @@
+# Shared Bazel configuration goes here;
+# Developers should use the Import option in the IDEA Bazel Plugin's import dialog
+directories:
+  .
+
+derive_targets_from_directories: true
+
+targets:
+  # If source code isn't resolving, add additional targets that compile it here
+
+additional_languages:
+  # Uncomment any additional languages you want supported
+  # android
+  # dart
+  # go
+  # javascript
+  # kotlin
+  python
+  # scala
+  # typescript

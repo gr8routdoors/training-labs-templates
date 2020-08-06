@@ -1,0 +1,9 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+
+py_binary(
+    name = "thirdparty",
+    srcs = ["thirdparty.py"],
+    deps = [
+        "//src/main/python/thirdparty/matrices",
+    ],
+)

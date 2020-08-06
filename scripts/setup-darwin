@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# vim: ft=bash
+
+declare -a BREW_PACKAGE_DEPS
+export BREW_PACKAGE_DEPS=(
+    openjdk@11
+    bazelisk
+    buildifier
+)
+
+set -e
+
+source "$(find . -name .shared.sh)"
+
+function setup() {
+    puts "ensuring xcode deps..."
+
+    xcode-select --install 2>/dev/null || true
+    sudo xcodebuild -license accept || true
+
+    [[ -n $(command -v brew) ]] || {
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    }
+
+    local brew_package_list_cache="$(mktemp -t brew)"
+    brew list -1 >"${brew_package_list_cache}"
+
+    for package in "${BREW_PACKAGE_DEPS[@]}"; do
+        puts "installing package" "${package}"
+        grep -q "${package}" "${brew_package_list_cache}" || brew install "${package}"
+    done
+
+    puts "may need to force-symlink ${bldylw}openjdk@11${bldgrn} so that it's in the PATH"
+    brew link openjdk@11 --force 2>/dev/null
+
+    [[ -s /usr/local/bin/bazel ]] || ln -s "$(which bazelisk)" /usr/local/bin/bazel
+}
+
+function main() {
+    setup "$@"
+}
+
+main "$@"
