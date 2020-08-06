@@ -1,10 +1,5 @@
-[![Bazel Build & Test](https://github.com/flarebuild/training-labs/workflows/Bazel%20Build%20&%20Test/badge.svg)](https://github.com/flarebuild/training-labs/actions?query=workflow%3A%22Bazel+Build+%26+Test%22)
-[![Bazel Lint](https://github.com/flarebuild/training-labs/workflows/Bazel%20Lint/badge.svg)](https://github.com/flarebuild/training-labs/actions?query=workflow%3A%22Bazel+Lint%22)
-[![Shell Check](https://github.com/flarebuild/training-labs/workflows/Shell%20Check/badge.svg)](https://github.com/flarebuild/training-labs/actions?query=workflow%3A%22Shell+Check%22)
 
 # Flare Bazel Training Labs
-
-NOTE: This is the working repo, and this Readme will be replaced eventually.
 
 ## Initial Installation
 

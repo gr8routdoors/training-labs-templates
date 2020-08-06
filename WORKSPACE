@@ -17,14 +17,7 @@ load("@rules_jvm_external//:specs.bzl", "maven")
 maven_install(
     name = "maven",
     artifacts = [
-        #   "junit:junit:4.12",
-        maven.artifact(
-            "junit",
-            "junit",
-            "4.13",
-            testonly = True,
-        ),
-        "org.apache.commons:commons-math3:3.2",
+
     ],
     maven_install_json = "//:maven_install.json",
     repositories = [
@@ -187,12 +180,6 @@ load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
 rules_pkg_dependencies()
 # Python etls lab end
 
-# Custom toolchain lab begin
-register_toolchains(
-    "//tools/cypher:cypher1_toolchain",
-    "//tools/cypher:cypher5_toolchain",
-)
-# Custom toolchain lab end
 
 # Docker rules begin https://github.com/bazelbuild/rules_docker#setup
 http_archive(
