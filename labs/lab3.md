@@ -18,7 +18,7 @@ Given the following Maven dependency definition, add <code>commons-math3</code> 
 <dependency>
    <groupId>org.apache.commons</groupId>
    <artifactId>commons-math3</artifactId>
-   <version>3.3.1</version>
+   <version>3.1</version>
 </dependency>
 ```
 
@@ -55,7 +55,7 @@ Dependencies downloaded by <code>rules_jvm_external</code> can be accessed by at
 
 #### 3: Bump the dependency version up
 
-Increase the version of commons-math to 3.3.2.
+Increase the version of commons-math to 3.2.
 
 <details>
   <summary>Hint</summary> Change  <code>"org.apache.commons:commons-math3:3.1" </code>to <code>"org.apache.commons:commons-math3:3.2" in </code>the artifacts list of <code>maven_install</code> in the <code>WORKSPACE</code>: 
