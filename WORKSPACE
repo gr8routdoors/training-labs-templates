@@ -2,6 +2,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # java thirdparty lab start
 RULES_JVM_EXTERNAL_TAG = "3.3"
+
 RULES_JVM_EXTERNAL_SHA = "d85951a92c0908c80bd8551002d66cb23c3434409c814179c0ff026b53544dab"
 
 http_archive(
@@ -12,12 +13,10 @@ http_archive(
 )
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
-load("@rules_jvm_external//:specs.bzl", "maven")
 
 maven_install(
     name = "maven",
     artifacts = [
-
     ],
     maven_install_json = "//:maven_install.json",
     repositories = [
@@ -137,6 +136,7 @@ rules_proto_grpc_repos()
 
 # Python thirdparty lab begin
 RULES_PYTHON_EXTERNAL_TAG = "0.1.5"
+
 RULES_PYTHON_EXTERNAL_SHA = "bc655e6d402915944e014c3b2cad23d0a97b83a66cc22f20db09c9f8da2e2789"
 
 http_archive(
@@ -179,7 +179,6 @@ load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
 
 rules_pkg_dependencies()
 # Python etls lab end
-
 
 # Docker rules begin https://github.com/bazelbuild/rules_docker#setup
 http_archive(
