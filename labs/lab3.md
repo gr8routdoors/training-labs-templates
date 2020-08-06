@@ -238,7 +238,7 @@ load("@pip//:requirements.bzl", "requirement")
 py_binary(
     name = "main",
     srcs = ["main.py"],
-    data = glob(["model/"]),
+    data = glob(["model/**"]),
     deps = [
         requirement("tensorflow"),
         requirement("matplotlib"),
