@@ -13,10 +13,19 @@ http_archive(
 )
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
+load("@rules_jvm_external//:specs.bzl", "maven")
 
 maven_install(
     name = "maven",
     artifacts = [
+        #   "junit:junit:4.12",
+        maven.artifact(
+            "junit",
+            "junit",
+            "4.13",
+            testonly = True,
+        ),
+        "org.apache.commons:commons-math3:3.2",
     ],
     maven_install_json = "//:maven_install.json",
     repositories = [
